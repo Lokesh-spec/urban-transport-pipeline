@@ -20,3 +20,5 @@ dbt_packages/
 
 # Mac OS
 .DS_Store
+
+.gitlab-ci.yml
