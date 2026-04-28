@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: raw_urban_mobility_dev
+    database: urban-transportation-analytics
+    tables:
+      - name: taxi_trips_raw

@@ -1,0 +1,22 @@
+# Environment Variables
+.env
+.env.local
+.Rprofile
+
+# Python / Local caches
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.pytest_cache/
+
+# dbt Logs & Local configs
+logs/
+target/
+dbt_packages/
+# NEVER commit Google JSON credentials
+*.json
+
+# Mac OS
+.DS_Store

@@ -1,0 +1,28 @@
+services:
+  scheduler:
+    volumes:
+      - ~/.config/gcloud/application_default_credentials.json:/usr/local/airflow/.config/gcloud/application_default_credentials.json:ro
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/usr/local/airflow/.config/gcloud/application_default_credentials.json
+      - GOOGLE_CLOUD_PROJECT=urban-transportation-analytics
+
+  api-server:
+    volumes:
+      - ~/.config/gcloud/application_default_credentials.json:/usr/local/airflow/.config/gcloud/application_default_credentials.json:ro
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/usr/local/airflow/.config/gcloud/application_default_credentials.json
+      - GOOGLE_CLOUD_PROJECT=urban-transportation-analytics
+
+  dag-processor:
+    volumes:
+      - ~/.config/gcloud/application_default_credentials.json:/usr/local/airflow/.config/gcloud/application_default_credentials.json:ro
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/usr/local/airflow/.config/gcloud/application_default_credentials.json
+      - GOOGLE_CLOUD_PROJECT=urban-transportation-analytics
+
+  triggerer:
+    volumes:
+      - ~/.config/gcloud/application_default_credentials.json:/usr/local/airflow/.config/gcloud/application_default_credentials.json:ro
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/usr/local/airflow/.config/gcloud/application_default_credentials.json
+      - GOOGLE_CLOUD_PROJECT=urban-transportation-analytics

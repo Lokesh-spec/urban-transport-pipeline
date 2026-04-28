@@ -1,0 +1,115 @@
+version: 2
+
+models:
+  - name: dim_company
+    description: "Dimension table containing Chicago taxi companies"
+    columns:
+      - name: company_key
+        description: "Surrogate key for the company"
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_payment_type
+    description: "Dimension table standardizing payment forms"
+    columns:
+      - name: payment_key
+        description: "Surrogate key for payment type"
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_community_area
+    description: "Dimension table for Chicago community areas"
+    columns:
+      - name: community_area_key
+        description: "Surrogate key for community area"
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_date
+    description: "Date dimension for chronological analysis"
+    columns:
+      - name: date_key
+        description: "Integer surrogate key for the date"
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_time
+    description: "Time dimension breaking down hours of the day"
+    columns:
+      - name: time_key
+        description: "Surrogate key for the hour block"
+        tests:
+          - unique
+          - not_null
+
+  - name: fct_trips
+    description: "Central fact table storing measures for each individual taxi trip"
+    columns:
+      - name: trip_id
+        description: "Unique identifier for the trip"
+        tests:
+          - unique
+          - not_null
+      - name: trip_start_date_key
+        description: "Foreign key linking to dim_date for trip start"
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_key
+      - name: trip_end_date_key
+        description: "Foreign key linking to dim_date for trip end"
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_key
+      - name: trip_start_hour_key
+        description: "Foreign key linking to dim_time for trip start hour"
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_time')
+                field: time_key
+      - name: trip_end_hour_key
+        description: "Foreign key linking to dim_time for trip end hour"
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_time')
+                field: time_key
+      - name: payment_key
+        description: "Foreign key linking to dim_payment_type"
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_payment_type')
+                field: payment_key
+      - name: company_key
+        description: "Foreign key linking to dim_company"
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_company')
+                field: company_key
+      - name: pickup_community_key
+        description: "Foreign key linking to dim_community_area for pickup location"
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_community_area')
+                field: community_area_key
+      - name: dropoff_community_key
+        description: "Foreign key linking to dim_community_area for dropoff location"
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_community_area')
+                field: community_area_key

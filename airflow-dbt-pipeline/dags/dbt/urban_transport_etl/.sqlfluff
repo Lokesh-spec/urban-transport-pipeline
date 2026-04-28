@@ -1,0 +1,12 @@
+[sqlfluff]
+dialect = bigquery
+
+# Ignore rules that cause annoying manual fixing:
+# LT05: Line is too long
+# CP02: Unquoted identifiers must be consistently lower case
+# AL01: Implicit/explicit aliasing of table
+# ST06: Select wildcards then simple targets
+# RF04: Keywords used as identifiers
+# RF02: Unqualified reference
+# AM06: Inconsistent column references in GROUP BY
+exclude_rules = LT05, CP02, AL01, ST06, RF04, RF02, AM06

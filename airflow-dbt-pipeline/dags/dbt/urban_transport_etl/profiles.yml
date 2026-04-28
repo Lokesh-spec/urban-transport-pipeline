@@ -1,0 +1,15 @@
+urban_transportation_analytics:
+  outputs:
+    dev:
+      dataset: raw_urban_mobility_dev
+      job_execution_timeout_seconds: 300
+      job_retries: 1
+      # keyfile: /usr/local/airflow/include/gcp/urban-mobility-dbt-sa.json
+      # keyfile: /Users/lokeshkv/.dbt/urban-mobility-dbt-sa.json
+      location: us-central1
+      method: oauth
+      priority: interactive
+      project: urban-transportation-analytics
+      threads: 4
+      type: bigquery
+  target: dev

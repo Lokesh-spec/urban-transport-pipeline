@@ -1,0 +1,57 @@
+stages:
+  - testing
+
+# Use a standard python image as the base for all pipeline runners
+image: python:3.10-slim
+
+# Variables apply globally to all pipeline jobs below
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+# Cache pip downloads to drastically speed up pipeline runs!
+cache:
+  paths:
+    - .cache/pip
+
+# ----------------------------------------------------
+# JOB 1: Python DAG Linting
+# ----------------------------------------------------
+lint-python:
+  stage: testing
+  before_script:
+    - pip install flake8
+  script:
+    - echo "Running flake8 to ensure Python DAG code is clean..."
+    # Scans the DAGs folder for Syntax Errors, undefined names.
+    - flake8 airflow-dbt-pipeline/dags/ --select=E9,F63,F7,F82 --show-source --statistics
+
+# ----------------------------------------------------
+# JOB 2: Data Engineering SQL Linting with SQLFluff
+# ----------------------------------------------------
+lint-sql:
+  stage: testing
+  before_script:
+    - pip install sqlfluff sqlfluff-templater-dbt dbt-core dbt-bigquery
+  script:
+    - echo "Validating dbt SQL logic against industry standards..."
+    # Lints the SQL models without actually running them inside a database
+    - cd airflow-dbt-pipeline/dags/dbt/urban_transport_etl/
+    - sqlfluff lint models/ --dialect bigquery
+
+# ----------------------------------------------------
+# JOB 3: dbt Parse Validation
+# ----------------------------------------------------
+dbt-validate:
+  stage: testing
+  before_script:
+    - pip install dbt-core dbt-bigquery
+  script:
+    - echo "Doing a dry-run parse of the dbt project graph..."
+    - cd airflow-dbt-pipeline/dags/dbt/urban_transport_etl/
+    
+    # GCP Default Credentials don't exist in naked GitLab containers.
+    # We generate a dummy secret so 'dbt parse' passes the initialization check!
+    - echo '{"type":"service_account","project_id":"dummy"}' > dummy.json
+    - export GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/dummy.json
+    
+    - dbt parse --project-dir . --profiles-dir .

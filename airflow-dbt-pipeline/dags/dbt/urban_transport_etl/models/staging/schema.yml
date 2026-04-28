@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: stg_taxi_trips
+    description: "Staging model for Chicago Taxi Trips, handling data type casting and renaming."
+    columns:
+      - name: trip_id
+        description: "Primary key for the trip."
+        tests:
+          - not_null
+          

@@ -1,0 +1,12 @@
+project:
+    name: airflow-dbt-pipeline
+
+deployment:
+  dag_deploy_enabled: true
+
+runtime:
+  version: 12.0.0
+  
+image:
+  base_image: quay.io/astronomer/astro-runtime:12.0.0
+  dockerfile: Dockerfile
